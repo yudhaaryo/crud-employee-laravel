@@ -48,12 +48,23 @@
                 <input type="text" name="phone" value="{{ old('phone') }}"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jabatan</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
                 <input type="text" name="position" value="{{ old('position') }}"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Departemen</label>
+            <select name="department_id"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="">Pilih Departemen</option>
+                @foreach($departements as $departement)
+                    <option value="{{ $departement->id }}" {{ old('department_id') == $departement->id ? 'selected' : '' }}>
+                        {{ $departement->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
         </form>

@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departement;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $employees = Employee::all();
-        return view('employees.index', compact('employees'));
-    }
+    public function index(Request $request)
+{
+    $search = $request->query('search');
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    $employees = Employee::when($search, function ($query, $search) {
+        return $query->where('name', 'like', '%' . $search );
+    })->get();
+
+    return view('employees.index', compact('employees', 'search'));
+}
+
     public function create()
     {
-        return view('employees.create');
+        $departements = Departement::all();
+        return view('employees.create', compact('departements'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -40,25 +38,17 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Employee $employee)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Employee $employee)
     {
-        return view('employees.edit', compact('employee'));
+        $departements = Departement::all();
+        return view('employees.edit', compact('employee', 'departements'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Employee $employee)
     {
         $request->validate([
@@ -67,14 +57,12 @@ class EmployeeController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string|max:15',
             'position' => 'required|string',
+            'departement_id' => 'required|string'
         ]);
         $employee->update($request->all());
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Employee $employee)
     {
         $employee->delete();
