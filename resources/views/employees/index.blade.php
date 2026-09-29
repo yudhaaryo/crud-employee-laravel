@@ -24,6 +24,11 @@
         </a>
 
         <div class="overflow-x-auto">
+            <form action="{{ route('employees.index') }}" method="GET" class="mb-4">
+                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cari nama pegawai..."
+                    class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cari</button>
+            </form>
             <table class="w-full border-collapse border border-gray-400">
                 <thead>
                     <tr class="bg-gray-200">
